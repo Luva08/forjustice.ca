@@ -2,21 +2,62 @@
 node_modules/
 npm-debug.log
 yarn-error.log
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+*.log
+logs/
 
 # React
 build/
+dist/
 coverage/
-*.env
+.next/
 
 # React Native
 *.xcodeproj/
 *.xcworkspace/
 ios/build/
-andriod/.gradle/
+android/.gradle/
 android/app/build/
+.expo/
+.expo-shared/
 
-# General
+# IDE
 .DS_Store
-*.log
+.vscode/
+.idea/
+*.swp
+*.swo
 *.tmp
 *.bak
+
+# Testing
+coverage/
+.nyc_output/
+
+# Terraform
+infrastructure/terraform/.terraform/
+infrastructure/terraform/*.tfstate
+infrastructure/terraform/*.tfstate.backup
+infrastructure/terraform/.terraform.lock.hcl
+infrastructure/terraform/terraform.tfvars
+
+# Docker
+.dockerignore
+
+# Production
+*.tgz
+*.pem
+
+# Misc
+.cache/
+temp/
+tmp/
