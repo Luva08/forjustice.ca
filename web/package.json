@@ -1,0 +1,13 @@
+{
+  "name": "afj-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo \"no build step\""
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "serve-static": "^1.15.0"
+  }
+}
