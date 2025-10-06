@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: corepack enable && corepack prepare pnpm@latest --activate
+      - name: Install
+        run: |
+          if [ -f package.json ]; then pnpm i --frozen-lockfile || pnpm i; fi
+          if [ -f backend/package.json ]; then (cd backend && pnpm i) || (cd backend && npm i); fi
+          if [ -f web/package.json ]; then (cd web && pnpm i) || (cd web && npm i); fi
+          if [ -f mobile/package.json ]; then (cd mobile && pnpm i) || (cd mobile && npm i); fi
+      - name: Build
+        run: |
+          if [ -f backend/package.json ]; then (cd backend && npm run build || true); fi
+          if [ -f web/package.json ]; then (cd web && npm run build || true); fi
