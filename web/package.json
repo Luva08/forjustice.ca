@@ -3,11 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "build": "echo \"no build step\""
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "serve-static": "^1.15.0"
+    "next": "14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next-i18next": "^14.1.0"
   }
 }
