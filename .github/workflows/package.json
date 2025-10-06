@@ -1,0 +1,12 @@
+{
+  "name": "forjustice.ca",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "web",
+    "mobile"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces || echo 'no build scripts yet'"
+  }
+}
