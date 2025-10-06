@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# React
+build/
+coverage/
+*.env
+
+# React Native
+*.xcodeproj/
+*.xcworkspace/
+ios/build/
+andriod/.gradle/
+android/app/build/
+
+# General
+.DS_Store
+*.log
+*.tmp
+*.bak
