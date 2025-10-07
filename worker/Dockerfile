@@ -1,32 +1,30 @@
-# Use Node.js 20 LTS as base image
-FROM node:20-alpine AS base
-
-# Install dependencies only when needed
-FROM base AS deps
+# worker/Dockerfile
+FROM node:20-slim AS base
 WORKDIR /app
-
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
-
-# Production image
-FROM base AS runner
-WORKDIR /app
-
 ENV NODE_ENV=production
 
-# Create a non-root user
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nodejs
+# Install only what we need to build
+FROM base AS deps
+COPY package.json package-lock.json* ./
+RUN npm ci --ignore-scripts
 
-# Copy dependencies
-COPY --from=deps --chown=nodejs:nodejs /app/node_modules ./node_modules
+# Build TypeScript
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# If you haven’t yet, add a tsconfig.json (you did): worker/tsconfig.json
+RUN npm run build
 
-# Copy application code
-COPY --chown=nodejs:nodejs . .
+# Runtime image (small)
+FROM gcr.io/distroless/nodejs20-debian12 AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+# If your worker needs time zone / locales, you can switch to node:20-slim for convenience.
 
-# Create logs directory
-RUN mkdir -p logs && chown nodejs:nodejs logs
+# Copy only what runtime needs
+COPY --from=build /app/package.json ./
+COPY --from=deps  /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
 
-USER nodejs
-
-CMD ["node", "worker.js"]
+# The compiled entrypoint should be dist/index.js (or dist/worker.js) per your package.json
+CMD ["dist/index.js"]
